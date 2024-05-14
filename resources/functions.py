@@ -50,7 +50,7 @@ class RPAChallenge:
     def mainTask(self):
         self.browser_object=Selenium(auto_close=False)
         try:
-            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True)
+            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True)
             
             try:
                 try:
