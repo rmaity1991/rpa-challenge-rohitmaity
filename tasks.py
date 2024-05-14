@@ -4,12 +4,12 @@ import logging
 
 
 news_data={
-    "reuters":"https://timesofindia.indiatimes.com/",   
+    "LATimes":"https://www.latimes.com/",   
 }
 @task
 def minimal_task():
-    obj=RPAChallenge(url=news_data["reuters"])
-    data=obj.get_input_data()
+    obj=RPAChallenge(url=news_data["LATimes"])
+    data=obj.readConfig()
 
     if obj.dataPayload == None:
         logging.log(logging.DEBUG,"There are no payloads to process the bot..Exiting")
