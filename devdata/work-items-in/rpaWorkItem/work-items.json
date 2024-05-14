@@ -1,0 +1,11 @@
+[
+  {
+      "payload": {
+         "SEARCH": "Hello World!",
+         "CATEGORY":"Headlines",
+         "MONTH":2
+      },
+      "files": {
+      }
+  }
+]
