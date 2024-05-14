@@ -54,7 +54,7 @@ class RPAChallenge:
             
             try:
                 try:
-                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["search_button"],timeout=30)
+                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["search_button"],timeout=120)
                     self.browser_object.click_element(CONFIG["LATimes"]["search_button"])
                 except Exception as e:
                     logging.log(logging.ERROR,f'Page does contain element for {CONFIG["LATimes"]["search_button"]}')
@@ -63,7 +63,7 @@ class RPAChallenge:
                 logging.log(logging.DEBUG,"The search button for the webpage is clicked")
 
                 try:
-                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["search_text_field"],timeout=30)
+                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["search_text_field"],timeout=120)
                     self.browser_object.input_text(CONFIG["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
                 except Exception as e:
                     logging.log(logging.ERROR,f'Page does contain element for {CONFIG["LATimes"]["search_text_field"]}')
@@ -75,14 +75,14 @@ class RPAChallenge:
                 logging.log(logging.DEBUG,"The search button for the webpage is clicked")
 
                 try:
-                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["category_selection"],timeout=30)
+                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["category_selection"],timeout=120)
                 except Exception as e:
                     logging.log(logging.ERROR,f'Page does contain element for {CONFIG["LATimes"]["category_selection"]}')
                     return
 
                 if self.browser_object.does_page_contain_element(CONFIG["LATimes"]["category_selection"]):
                     self.browser_object.select_from_list_by_label(CONFIG["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
-                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["news_results_open_status"],30)
+                    self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["news_results_open_status"],120)
                     sleep(20)             
                                                   
                 data=[]
@@ -106,7 +106,7 @@ class RPAChallenge:
                                             
                         self.browser_object.scroll_element_into_view(CONFIG["LATimes"]["news_next_page"])
                         self.browser_object.click_element(CONFIG["LATimes"]["news_next_page"])
-                        self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["news_results_open_status"],30)
+                        self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["news_results_open_status"],120)
                         sleep(15)
                 
                 Files().create_workbook(path="../output/result.xlsx")
