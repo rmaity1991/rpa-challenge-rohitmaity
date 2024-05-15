@@ -6,8 +6,9 @@ from time import sleep
 import time
 import datetime
 from RPA.Excel.Files import Files
-
-logging.basicConfig(filename='./output/botLogging.log', encoding='utf-8', level=logging.DEBUG)
+current_date=f"{datetime.datetime.fromtimestamp(time.time()).day}/{datetime.datetime.fromtimestamp(time.time()).month}/{datetime.datetime.fromtimestamp(time.time()).year}"
+task_name="NewsScrapper"
+logging.basicConfig(filename=f'./output/botLogging_{current_date}.log', encoding='utf-8', level=logging.DEBUG)
 class NewsScrapper:
 
     def __init__(self,url,xpaths):
@@ -17,16 +18,16 @@ class NewsScrapper:
         self.browser_object=Selenium(auto_close=False,implicit_wait=60,page_load_timeout=120)
         self.excel_obj=Files()
         self.xpaths=xpaths
-        logging.log(logging.INFO,"Finished Initialization")
+        logging.log(logging.INFO,f"{task_name}:Finished Initialization")
     def readConfig(self):
         try:
             library=WorkItems()
             input_work_item=library.get_input_work_item()
             data_payload=library.get_work_item_payload()
             self.dataPayload=data_payload
-            logging.log(logging.INFO,"Work Item data has been read successfully")
+            logging.log(logging.INFO,f"{task_name}:Work Item data has been read successfully")
         except Exception as e:
-            logging.log(logging.ERROR,f"The following error has occured while reading WorkItems : {e}")
+            logging.log(logging.ERROR,f"{task_name}:The following error has occured while reading WorkItems : {e}")
             self.dataPayload=None
 
     def cleanUpTask(self):
@@ -35,36 +36,36 @@ class NewsScrapper:
 
     def mainTask(self):
         try:
-            logging.log(logging.INFO,"Opening Available Browser")
+            logging.log(logging.INFO,f"{task_name}:Opening Available Browser")
             self.browser_object.open_available_browser(url=self.dataUrl,maximized=True)
             
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"],timeout=120)
                 self.browser_object.click_element(self.xpaths["LATimes"]["search_button"])
-                logging.log(logging.INFO,"Entering in the search field")
+                logging.log(logging.INFO,f"{task_name}:Entering in the search field")
             except Exception as e:
                 logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try chercking the xpaths')
                 return
                     
-            logging.log(logging.INFO,"The search button for the webpage is clicked")
+            logging.log(logging.INFO,f"{task_name}:The search button for the webpage is clicked")
 
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"],timeout=120)
                 self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
-                logging.log(logging.INFO,f"Entering {self.dataPayload['SEARCH']} in the serach field")
+                logging.log(logging.INFO,f"{task_name}:Entering {self.dataPayload['SEARCH']} in the serach field")
             except Exception as e:
-                logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths')
+                logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths')
                 return
             
-            logging.log(logging.DEBUG,"The search input for the webpage is written")
+            logging.log(logging.DEBUG,f"{task_name}:The search input for the webpage is written")
         
             self.browser_object.click_element_when_clickable(self.xpaths["LATimes"]["search_submit_button"])
-            logging.log(logging.DEBUG,"The search button for the webpage is clicked")
+            logging.log(logging.DEBUG,f"{task_name}:The search button for the webpage is clicked")
 
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["category_selection"],timeout=120)
             except Exception as e:
-                logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["category_selection"]}, Try chercking the xpaths')
+                logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["category_selection"]}, Try chercking the xpaths')
                 return
 
             if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["category_selection"]):
@@ -88,7 +89,7 @@ class NewsScrapper:
                         news_timeStamp=datetime.datetime.fromtimestamp(float(converted_timestamp))
 
                         if (self.current_date.month - news_timeStamp.month) > self.dataPayload['MONTH']:
-                            logging.log(logging.DEBUG,f"The date difference is greter than the specified in the work Items CONFIG MONTH")
+                            logging.log(logging.DEBUG,f"{task_name}:The date difference is greter than the specified in the work Items CONFIG MONTH")
                             stop_page_scroll=True
                             break
 
@@ -105,6 +106,6 @@ class NewsScrapper:
             self.excel_obj.append_rows_to_worksheet(data,header=True)
             self.excel_obj.save_workbook()
         except Exception as e:
-            logging.log(logging.ERROR,f"The following error has occured whiole processing the bot : {e}")
+            logging.log(logging.ERROR,f"{task_name}:The following error has occured whiole processing the bot : {e}")
             return
             
