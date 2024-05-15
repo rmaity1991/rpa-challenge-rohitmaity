@@ -7,7 +7,7 @@ import time
 import datetime
 from RPA.Excel.Files import Files
 
-logging.basicConfig(filename='./output/botLogging.log', encoding='utf-8', level=logging.INFO)
+logging.basicConfig(filename='./output/botLogging.log', encoding='utf-8', level=logging.DEBUG)
 class NewsScrapper:
 
     def __init__(self,url,xpaths):
@@ -17,36 +17,41 @@ class NewsScrapper:
         self.browser_object=Selenium(auto_close=False)
         self.excel_obj=Files()
         self.xpaths=xpaths
-
+        logging.log(logging.INFO,"Finished Initialization")
     def readConfig(self):
         try:
             library=WorkItems()
             input_work_item=library.get_input_work_item()
             data_payload=library.get_work_item_payload()
             self.dataPayload=data_payload
-            logging.log(logging.INFO,"Work Item data has been read succesfully")
+            logging.log(logging.INFO,"Work Item data has been read successfully")
         except Exception as e:
-            logging.log(logging.ERROR,f"The following error has occured whuile reading WorkItems : {e}")
+            logging.log(logging.ERROR,f"The following error has occured while reading WorkItems : {e}")
             self.dataPayload=None
 
     def cleanUpTask(self):
         self.browser_object.close_browser()
+        logging.log(logging.INFO,"Browser Closed")
 
     def mainTask(self):
         try:
+            logging.log(logging.INFO,"Opening Available Browser")
             self.browser_object.open_available_browser(url=self.dataUrl,maximized=True)
+            
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"],timeout=120)
                 self.browser_object.click_element(self.xpaths["LATimes"]["search_button"])
+                logging.log(logging.INFO,"Entering in the search field")
             except Exception as e:
                 logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try chercking the xpaths')
                 return
                     
-            logging.log(logging.DEBUG,"The search button for the webpage is clicked")
+            logging.log(logging.INFO,"The search button for the webpage is clicked")
 
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"],timeout=120)
                 self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
+                logging.log(logging.INFO,f"Entering {self.dataPayload['SEARCH']} in the serach field")
             except Exception as e:
                 logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths')
                 return
