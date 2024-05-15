@@ -6,9 +6,10 @@ from time import sleep
 import time
 import datetime
 from RPA.Excel.Files import Files
-current_date=f"{datetime.datetime.fromtimestamp(time.time()).day}/{datetime.datetime.fromtimestamp(time.time()).month}/{datetime.datetime.fromtimestamp(time.time()).year}"
+current_date=f"{datetime.datetime.fromtimestamp(time.time()).day}_{datetime.datetime.fromtimestamp(time.time()).month}_{datetime.datetime.fromtimestamp(time.time()).year}"
 task_name="NewsScrapper"
 logging.basicConfig(filename=f'./output/botLogging_{current_date}.log', encoding='utf-8', level=logging.DEBUG)
+logging.log(logging.INFO,f"*******************************************************************")
 class NewsScrapper:
 
     def __init__(self,url,xpaths):
@@ -71,7 +72,7 @@ class NewsScrapper:
             if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["category_selection"]):
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
-                #sleep(20)             
+                sleep(20)             
                                                 
             data=[]
             if self.browser_object.is_list_selection(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY']):
@@ -99,7 +100,7 @@ class NewsScrapper:
                     self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
-                    #sleep(15)
+                    sleep(15)
             print(data)
             workbook=self.excel_obj.create_workbook(path='./output/results.xlsx',sheet_name="Sheet1")
             self.excel_obj.set_active_worksheet("Sheet1")
