@@ -6,6 +6,7 @@ CONFIG={
         "category_selection":'//select[@class="select-input"]',
         "news_content_count":'//div[@class="promo-content"]',
         "news_title":'//h3[@class="promo-title"]',
+        "news_link":'//h3[@class="promo-title"]//a[@class="link"]',
         "news_data":'//p[@class="promo-description"]',
         "news_date":'//p[@class="promo-timestamp"]',
         "news_image":'//a[@class="link promo-placeholder"]',

@@ -1,32 +1,19 @@
 from RPA.Browser.Selenium import Selenium
 from RPA.Robocorp.WorkItems  import WorkItems
+from RPA.HTTP import HTTP
 import logging
 from time import sleep
+import time
 import datetime
 from RPA.Excel.Files import Files
 
-months={
-    "January":1,
-    "February":2,
-    "March":3,
-    "April":4,
-    "May":5,
-    "June":6,
-    "July":7,
-    "August":8,
-    "September":9,
-    "October":10,
-    "November":11,
-    "December":12
-}
+logging.basicConfig(filename='./output/botLogging.log', encoding='utf-8', level=logging.INFO)
 class NewsScrapper:
-
-    current_date=datetime.datetime.now()
 
     def __init__(self,url,xpaths):
         # Create the data url and get the current system date
         self.dataUrl=url
-        self.current_date=datetime.datetime.now()
+        self.current_date=datetime.datetime.fromtimestamp(time.time())
         self.browser_object=Selenium(auto_close=False)
         self.excel_obj=Files()
         self.xpaths=xpaths
@@ -61,7 +48,7 @@ class NewsScrapper:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"],timeout=120)
                 self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
             except Exception as e:
-                logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try chercking the xpaths')
+                logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths')
                 return
             
             logging.log(logging.DEBUG,"The search input for the webpage is written")
@@ -87,14 +74,22 @@ class NewsScrapper:
                     news_title=self.browser_object.get_webelements(self.xpaths["LATimes"]["news_title"])
                     news_desc=self.browser_object.get_webelements(self.xpaths["LATimes"]["news_data"])
                     news_date=self.browser_object.get_webelements(self.xpaths["LATimes"]["news_date"])
+                    news_link=self.browser_object.get_webelements(self.xpaths["LATimes"]["news_link"])
                     
-                    for x,y,z in zip(news_title,news_desc,news_date):
-                        news_timeStamp=int(z.get_attribute("data-timestamp"))
-                        news_timeStamp=datetime.datetime.fromtimestamp(timestamp=int(news_timeStamp))
-                        data_dict={"title":self.browser_object.get_text(x),"desc":self.browser_object.get_text(y),"date_stamp":news_timeStamp}
-                        data.append(data_dict)
+                    for x,y,z,a in zip(news_title,news_desc,news_date,news_link):
+                        news_timeStamp=z.get_attribute("data-timestamp")
+                        news_link_address=a.get_attribute("href")
+                        converted_timestamp=news_timeStamp[0:10]+'.'+news_timeStamp[10:]
+                        news_timeStamp=datetime.datetime.fromtimestamp(float(converted_timestamp))
 
-                    stop_page_scroll=True                    
+                        if (self.current_date.month - news_timeStamp.month) > self.dataPayload['MONTH']:
+                            logging.log(logging.DEBUG,f"The date difference is greter than the specified in the work Items CONFIG MONTH")
+                            stop_page_scroll=True
+                            break
+
+                        data_dict={"TITLE":self.browser_object.get_text(x),"DESC":self.browser_object.get_text(y),"DATE":f"{news_timeStamp.month}/{news_timeStamp.day}/{news_timeStamp.year}","LINK":news_link_address}
+                        data.append(data_dict)  
+
                     self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
