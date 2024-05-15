@@ -1,5 +1,5 @@
 from robocorp.tasks import task
-from resources.functions import RPAChallenge
+from functions import RPAChallenge
 import logging
 
 

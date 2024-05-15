@@ -1,7 +1,7 @@
 from RPA.Browser.Selenium import Selenium
 from RPA.Robocorp.WorkItems  import WorkItems
 import logging
-from resources.xpaths import CONFIG
+from xpaths import CONFIG
 from time import sleep
 import datetime
 from RPA.Excel.Files import Files
@@ -50,7 +50,7 @@ class RPAChallenge:
     def mainTask(self):
         self.browser_object=Selenium(auto_close=False)
         try:
-            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True)
+            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True)
             
             try:
                 try:
@@ -109,13 +109,12 @@ class RPAChallenge:
                         self.browser_object.wait_until_page_contains_element(CONFIG["LATimes"]["news_results_open_status"],120)
                         sleep(15)
                 
-                Files().create_workbook(path="../output/result.xlsx")
-                work_sheets=Files().list_worksheets()
-                print(work_sheets)
-                Files().set_active_worksheet(work_sheets[0])
-                Files().append_rows_to_worksheet(data,header=True)
-                Files().save_workbook()
-
+                excel_operations=Files()
+                workbook=excel_operations.create_workbook(path='./output/results.xlsx',sheet_name="Sheet1")
+                excel_operations.set_active_worksheet("Sheet1")
+                excel_operations.append_rows_to_worksheet(data,header=True)
+                excel_operations.save_workbook()
+                
             except Exception as e:
                 logging.log(logging.ERROR,e)
                 return
