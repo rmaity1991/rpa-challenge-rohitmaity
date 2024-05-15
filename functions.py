@@ -42,10 +42,6 @@ class NewsScrapper:
             logging.log(logging.ERROR,f"The following error has occured whuile reading WorkItems : {e}")
             self.dataPayload=None
 
-    def getDateFormat(self,date):
-        dateFormat=datetime.datetime.fromtimestamp(float(date))
-        return dateFormat
-
     def cleanUpTask(self):
         self.browser_object.close_browser()
 
@@ -93,21 +89,17 @@ class NewsScrapper:
                     news_date=self.browser_object.get_webelements(self.xpaths["LATimes"]["news_date"])
                     
                     for x,y,z in zip(news_title,news_desc,news_date):
-                        news_timeStamp=self.browser_object.get_text(z)
-                        news_data_split=news_timeStamp.split()
-                        month=months[news_data_split[0]]
-
-                        if  int(self.current_date.month) - int(month) > int(self.dataPayload['MONTH']):
-                            stop_page_scroll=True
-                            break
-                        data_dict={"title":self.browser_object.get_text(x),"desc":self.browser_object.get_text(y),"date_stamp":self.browser_object.get_text(z)}
+                        news_timeStamp=int(z.get_attribute("data-timestamp"))
+                        news_timeStamp=datetime.datetime.fromtimestamp(timestamp=int(news_timeStamp))
+                        data_dict={"title":self.browser_object.get_text(x),"desc":self.browser_object.get_text(y),"date_stamp":news_timeStamp}
                         data.append(data_dict)
-                                        
+
+                    stop_page_scroll=True                    
                     self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
                     sleep(15)
-
+            print(data)
             workbook=self.excel_obj.create_workbook(path='./output/results.xlsx',sheet_name="Sheet1")
             self.excel_obj.set_active_worksheet("Sheet1")
             self.excel_obj.append_rows_to_worksheet(data,header=True)
