@@ -71,8 +71,9 @@ class NewsScrapper:
 
             if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["category_selection"]):
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
+                sleep(15)
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
-                sleep(20)             
+                             
                                                 
             data=[]
             if self.browser_object.is_list_selection(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY']):
