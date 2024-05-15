@@ -14,7 +14,7 @@ class NewsScrapper:
         # Create the data url and get the current system date
         self.dataUrl=url
         self.current_date=datetime.datetime.fromtimestamp(time.time())
-        self.browser_object=Selenium(auto_close=False)
+        self.browser_object=Selenium(auto_close=False,implicit_wait=60,page_load_timeout=120)
         self.excel_obj=Files()
         self.xpaths=xpaths
         logging.log(logging.INFO,"Finished Initialization")
@@ -70,7 +70,7 @@ class NewsScrapper:
             if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["category_selection"]):
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
-                sleep(20)             
+                #sleep(20)             
                                                 
             data=[]
             if self.browser_object.is_list_selection(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY']):
@@ -98,7 +98,7 @@ class NewsScrapper:
                     self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
                     self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
-                    sleep(15)
+                    #sleep(15)
             print(data)
             workbook=self.excel_obj.create_workbook(path='./output/results.xlsx',sheet_name="Sheet1")
             self.excel_obj.set_active_worksheet("Sheet1")
