@@ -104,6 +104,8 @@ class NewsScrapper:
                         self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
                         self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
                         sleep(15)
+                    else:
+                        stop_page_scroll=True
             print(data)
             workbook=self.excel_obj.create_workbook(path='./output/results.xlsx',sheet_name="Sheet1")
             self.excel_obj.set_active_worksheet("Sheet1")
