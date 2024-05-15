@@ -11,6 +11,6 @@ CONFIG={
         "news_date":'//p[@class="promo-timestamp"]',
         "news_image":'//a[@class="link promo-placeholder"]',
         "news_next_page":'//div[@class="search-results-module-next-page"]',
-        "news_results_open_status":'//span[@class="search-results-module-count-desktop"]'
+        "news_results_open_status":'//span[@class="search-results-module-count-desktop"]',
     }
 }

@@ -76,6 +76,7 @@ class NewsScrapper:
                              
                                                 
             data=[]
+            count=0
             if self.browser_object.is_list_selection(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY']):
                 stop_page_scroll=False
                 while self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["news_next_page"]) and stop_page_scroll==False:
