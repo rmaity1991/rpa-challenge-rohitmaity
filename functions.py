@@ -98,10 +98,11 @@ class NewsScrapper:
                         data_dict={"TITLE":self.browser_object.get_text(x),"DESC":self.browser_object.get_text(y),"DATE":f"{news_timeStamp.month}/{news_timeStamp.day}/{news_timeStamp.year}","LINK":news_link_address}
                         data.append(data_dict)  
 
-                    self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
-                    self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
-                    self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
-                    sleep(15)
+                    if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["news_next_page"]):
+                        self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
+                        self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
+                        self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
+                        sleep(15)
             print(data)
             workbook=self.excel_obj.create_workbook(path='./output/results.xlsx',sheet_name="Sheet1")
             self.excel_obj.set_active_worksheet("Sheet1")
