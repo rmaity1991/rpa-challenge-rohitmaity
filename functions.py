@@ -20,6 +20,7 @@ class NewsScrapper:
         self.excel_obj=Files()
         self.xpaths=xpaths
         logging.log(logging.INFO,f"{task_name}:Finished Initialization")
+
     def readConfig(self):
         try:
             library=WorkItems()
