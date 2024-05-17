@@ -44,9 +44,10 @@ class NewsScrapper:
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"],timeout=120)
                 self.browser_object.click_element(self.xpaths["LATimes"]["search_button"])
+                sleep(15)
                 logging.log(logging.INFO,f"{task_name}:Entering in the search field")
             except Exception as e:
-                logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try chercking the xpaths')
+                logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try checking the xpaths')
                 return
                     
             logging.log(logging.INFO,f"{task_name}:The search button for the webpage is clicked")
