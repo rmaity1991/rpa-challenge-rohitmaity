@@ -39,7 +39,7 @@ class NewsScrapper:
     def mainTask(self):
         try:
             logging.log(logging.INFO,f"{task_name}:Opening Available Browser")
-            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True)
+            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True)
             
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"],timeout=120)
@@ -72,8 +72,9 @@ class NewsScrapper:
 
             if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["category_selection"]):
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
+                
                 sleep(15)
-                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
+                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],30)
                              
                                                 
             data=[]
@@ -103,10 +104,12 @@ class NewsScrapper:
                     if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["news_next_page"]):
                         self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
                         self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
-                        self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],120)
+
                         sleep(15)
+                        self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],30)
                     else:
                         stop_page_scroll=True
+                        
             print(data)
             workbook=self.excel_obj.create_workbook(path='./output/results.xlsx',sheet_name="Sheet1")
             self.excel_obj.set_active_worksheet("Sheet1")
