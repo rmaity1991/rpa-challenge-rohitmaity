@@ -45,12 +45,11 @@ class NewsScrapper:
                 self.browser_object.set_browser_implicit_wait(120)
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"],timeout=120)
                 self.browser_object.click_element(self.xpaths["LATimes"]["search_button"])
-                sleep(15)
                 logging.log(logging.INFO,f"{task_name}:Entering in the search field")
             except Exception as e:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}.png")
                 logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try checking the xpaths : {e}')
-                return
+                
                     
             logging.log(logging.INFO,f"{task_name}:The search button for the webpage is clicked")
 
@@ -61,7 +60,7 @@ class NewsScrapper:
             except Exception as e:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}.png")
                 logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths : {e}')
-                return
+                
             
             logging.log(logging.DEBUG,f"{task_name}:The search input for the webpage is written")
         
@@ -73,7 +72,7 @@ class NewsScrapper:
             except Exception as e:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}.png")
                 logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["category_selection"]}, Try chercking the xpaths : {e}')
-                return
+                
 
             if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["category_selection"]):
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
