@@ -1,9 +1,9 @@
 CONFIG={
     "LATimes":{
         "search_button":r"//button[@data-element='search-button']",
-        "search_text_field":r"//input[@data-element='search-form-input']",
+        "search_text_field":r"//form[@data-element='search-form']//input[@data-element='search-form-input']",
         "search_submit_button":r"//button[@data-element='search-submit-button']",
-        "category_selection":r"//select[@class='select-input']",
+        "category_selection":r"//div[@class='select']//select[@class='select-input']",
         "news_content_count":r"//div[@class='promo-content']",
         "news_title":r"//h3[@class='promo-title']",
         "news_link":r"//h3[@class='promo-title']//a[@class='link']",
