@@ -58,8 +58,8 @@ class NewsScrapper:
 
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"],timeout=120)
-                #self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
-                self.browser_object.press_keys(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
+                self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
+                
                 logging.log(logging.INFO,f"{task_name}:Entering {self.dataPayload['SEARCH']} in the serach field")
             except Exception as e:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}_{self.screenshotFile}.png")
