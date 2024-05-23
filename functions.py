@@ -43,8 +43,7 @@ class NewsScrapper:
             logging.log(logging.INFO,f"{task_name}:Opening Available Browser")
             self.browser_object.open_available_browser(url=self.dataUrl,maximized=True) 
             self.browser_object.set_browser_implicit_wait(300)        
-            try:
-                
+            try:              
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"])
                 self.browser_object.click_element(self.xpaths["LATimes"]["search_button"])
                 logging.log(logging.INFO,f"{task_name}:Entering in the search field")
@@ -52,15 +51,12 @@ class NewsScrapper:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}_{self.screenshotFile}.png")
                 self.screenshotFile+=1
                 logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try checking the xpaths : {e}')
-                
-                
-                    
+                                    
             logging.log(logging.INFO,f"{task_name}:The search button for the webpage is clicked")
 
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"])
-                self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
-                
+                self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])              
                 logging.log(logging.INFO,f"{task_name}:Entering {self.dataPayload['SEARCH']} in the serach field")
             except Exception as e:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}_{self.screenshotFile}.png")
