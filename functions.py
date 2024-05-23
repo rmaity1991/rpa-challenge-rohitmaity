@@ -48,8 +48,7 @@ class NewsScrapper:
                 sleep(15)
                 logging.log(logging.INFO,f"{task_name}:Entering in the search field")
             except Exception as e:
-                screenshot=ImageGrab.grab()
-                screenshot.save(f"./output/Error_{current_date}.png")
+                self.browser_object.screenshot()
                 logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try checking the xpaths : {e}')
                 return
                     
@@ -60,8 +59,7 @@ class NewsScrapper:
                 self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
                 logging.log(logging.INFO,f"{task_name}:Entering {self.dataPayload['SEARCH']} in the serach field")
             except Exception as e:
-                screenshot=ImageGrab.grab()
-                screenshot.save(f"./output/Error_{current_date}.png")
+                self.browser_object.screenshot()
                 logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths : {e}')
                 return
             
@@ -73,8 +71,7 @@ class NewsScrapper:
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["category_selection"],timeout=120)
             except Exception as e:
-                screenshot=ImageGrab.grab()
-                screenshot.save(f"./output/Error_{current_date}.png")
+                self.browser_object.screenshot()
                 logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["category_selection"]}, Try chercking the xpaths : {e}')
                 return
 
@@ -125,7 +122,6 @@ class NewsScrapper:
             self.excel_obj.save_workbook()
         except Exception as e:
             logging.log(logging.ERROR,f"{task_name}:The following error has occured whole processing the bot : {e}")
-            screenshot=ImageGrab.grab()
-            screenshot.save(f"./output/Error_{current_date}.png")
+            self.browser_object.screenshot()
             return
             
