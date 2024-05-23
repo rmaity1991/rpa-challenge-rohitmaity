@@ -41,10 +41,11 @@ class NewsScrapper:
     def mainTask(self):
         try:
             logging.log(logging.INFO,f"{task_name}:Opening Available Browser")
-            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True)         
+            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True) 
+            self.browser_object.set_browser_implicit_wait(300)        
             try:
-                self.browser_object.set_browser_implicit_wait(120)
-                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"],timeout=120)
+                
+                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"])
                 self.browser_object.click_element(self.xpaths["LATimes"]["search_button"])
                 logging.log(logging.INFO,f"{task_name}:Entering in the search field")
             except Exception as e:
@@ -57,7 +58,7 @@ class NewsScrapper:
             logging.log(logging.INFO,f"{task_name}:The search button for the webpage is clicked")
 
             try:
-                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"],timeout=120)
+                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"])
                 self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
                 
                 logging.log(logging.INFO,f"{task_name}:Entering {self.dataPayload['SEARCH']} in the serach field")
@@ -65,7 +66,7 @@ class NewsScrapper:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}_{self.screenshotFile}.png")
                 self.screenshotFile+=1
                 logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths : {e}')
-                self.browser_object.press_keys(self.dataPayload['CATEGORY'])
+                
                 
             
             logging.log(logging.DEBUG,f"{task_name}:The search input for the webpage is written")
@@ -75,7 +76,7 @@ class NewsScrapper:
             logging.log(logging.DEBUG,f"{task_name}:The search button for the webpage is clicked")
 
             try:
-                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["category_selection"],timeout=120)
+                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["category_selection"])
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
                 sleep(15)
             except Exception as e:
@@ -112,7 +113,7 @@ class NewsScrapper:
                         self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
 
                         sleep(15)
-                        self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],30)
+                        self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"])
                     else:
                         stop_page_scroll=True
                         
