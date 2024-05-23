@@ -65,6 +65,7 @@ class NewsScrapper:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}_{self.screenshotFile}.png")
                 self.screenshotFile+=1
                 logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["search_text_field"]}, Try checking the xpaths : {e}')
+                self.browser_object.press_keys(self.dataPayload['CATEGORY'])
                 
             
             logging.log(logging.DEBUG,f"{task_name}:The search input for the webpage is written")
@@ -74,15 +75,14 @@ class NewsScrapper:
             logging.log(logging.DEBUG,f"{task_name}:The search button for the webpage is clicked")
 
             try:
-                # self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["category_selection"],timeout=120)
-                # self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
-                self.browser_object.press_keys(self.dataPayload['CATEGORY'])
+                self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["category_selection"],timeout=120)
+                self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
                 sleep(15)
             except Exception as e:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}_{self.screenshotFile}.png")
                 self.screenshotFile+=1
-                logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["category_selection"]}, Try chercking the xpaths : {e}')                  
-                                                
+                logging.log(logging.ERROR,f'{task_name}:Page does contain element for {self.xpaths["LATimes"]["category_selection"]}, Try chercking the xpaths : {e}')
+                                  
             data=[]
             count=0
             if self.browser_object.is_list_selection(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY']):
