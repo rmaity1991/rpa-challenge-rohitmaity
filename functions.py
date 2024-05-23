@@ -52,12 +52,14 @@ class NewsScrapper:
                 self.screenshotFile+=1
                 logging.log(logging.ERROR,f'Page does contain element for {self.xpaths["LATimes"]["search_button"]}, Try checking the xpaths : {e}')
                 
+                
                     
             logging.log(logging.INFO,f"{task_name}:The search button for the webpage is clicked")
 
             try:
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_text_field"],timeout=120)
-                self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
+                #self.browser_object.input_text(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
+                self.browser_object.press_keys(self.xpaths["LATimes"]["search_text_field"],self.dataPayload['SEARCH'])
                 logging.log(logging.INFO,f"{task_name}:Entering {self.dataPayload['SEARCH']} in the serach field")
             except Exception as e:
                 self.browser_object.screenshot(filename=f"./output/Error_{current_date}_{self.screenshotFile}.png")
@@ -67,7 +69,8 @@ class NewsScrapper:
             
             logging.log(logging.DEBUG,f"{task_name}:The search input for the webpage is written")
         
-            self.browser_object.click_element_when_clickable(self.xpaths["LATimes"]["search_submit_button"])
+            self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_submit_button"])
+            self.browser_object.click_element(self.xpaths["LATimes"]["search_submit_button"])
             logging.log(logging.DEBUG,f"{task_name}:The search button for the webpage is clicked")
 
             try:
@@ -82,7 +85,7 @@ class NewsScrapper:
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
                 sleep(15)
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],30)
-                             
+                   
                                                 
             data=[]
             count=0

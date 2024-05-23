@@ -1,7 +1,7 @@
 CONFIG={
     "LATimes":{
         "search_button":'//button[@data-element="search-button"]',
-        "search_text_field":'//input[@name="q"]',
+        "search_text_field":'//input[@name="q" and @type="text" and @data-element="search-form-input"]',
         "search_submit_button":'//button[@data-element="search-submit-button"]',
         "category_selection":'//select[@class="select-input"]',
         "news_content_count":'//div[@class="promo-content"]',
