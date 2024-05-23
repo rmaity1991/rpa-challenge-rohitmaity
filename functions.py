@@ -18,7 +18,6 @@ class NewsScrapper:
         self.dataUrl=url
         self.current_date=datetime.datetime.fromtimestamp(time.time())
         self.browser_object=Selenium(auto_close=False,page_load_timeout=120)
-        self.browser_object.set_browser_implicit_wait(120)
         self.excel_obj=Files()
         self.xpaths=xpaths
         logging.log(logging.INFO,f"{task_name}:Finished Initialization")
@@ -41,9 +40,9 @@ class NewsScrapper:
     def mainTask(self):
         try:
             logging.log(logging.INFO,f"{task_name}:Opening Available Browser")
-            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True)
-            
+            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True)         
             try:
+                self.browser_object.set_browser_implicit_wait(120)
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"],timeout=120)
                 self.browser_object.click_element(self.xpaths["LATimes"]["search_button"])
                 sleep(15)
