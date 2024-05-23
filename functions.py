@@ -41,7 +41,7 @@ class NewsScrapper:
     def mainTask(self):
         try:
             logging.log(logging.INFO,f"{task_name}:Opening Available Browser")
-            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True) 
+            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True) 
             self.browser_object.set_browser_implicit_wait(300)        
             try:
                 
@@ -110,10 +110,10 @@ class NewsScrapper:
 
                     if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["news_next_page"]):
                         self.browser_object.scroll_element_into_view(self.xpaths["LATimes"]["news_next_page"])
-                        self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
-
-                        sleep(15)
-                        self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"])
+                        try:
+                            self.browser_object.click_element(self.xpaths["LATimes"]["news_next_page"])
+                        except Exception as e:
+                            stop_page_scroll=True   
                     else:
                         stop_page_scroll=True
                         
