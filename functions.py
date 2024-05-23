@@ -18,6 +18,7 @@ class NewsScrapper:
         self.dataUrl=url
         self.current_date=datetime.datetime.fromtimestamp(time.time())
         self.browser_object=Selenium(auto_close=False,page_load_timeout=120)
+        self.browser_object.set_browser_implicit_wait(120)
         self.excel_obj=Files()
         self.xpaths=xpaths
         logging.log(logging.INFO,f"{task_name}:Finished Initialization")
