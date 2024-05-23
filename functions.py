@@ -9,7 +9,7 @@ import datetime
 from RPA.Excel.Files import Files
 current_date=f"{datetime.datetime.fromtimestamp(time.time()).day}_{datetime.datetime.fromtimestamp(time.time()).month}_{datetime.datetime.fromtimestamp(time.time()).year}"
 task_name="NewsScrapper"
-logging.basicConfig(filename=f'./output/botLogging_{current_date}.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename=f'./output/botLogging_{current_date}.log', encoding='utf-8', level=logging.ERROR)
 logging.log(logging.INFO,f"*******************************************************************")
 class NewsScrapper:
 
@@ -76,7 +76,6 @@ class NewsScrapper:
 
             if self.browser_object.does_page_contain_element(self.xpaths["LATimes"]["category_selection"]):
                 self.browser_object.select_from_list_by_label(self.xpaths["LATimes"]["category_selection"],self.dataPayload['CATEGORY'])
-                
                 sleep(15)
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["news_results_open_status"],30)
                              
