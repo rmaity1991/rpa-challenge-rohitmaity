@@ -41,7 +41,7 @@ class NewsScrapper:
     def mainTask(self):
         try:
             logging.log(logging.INFO,f"{task_name}:Opening Available Browser")
-            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True) 
+            self.browser_object.open_available_browser(url=self.dataUrl,maximized=True,headless=True) 
             self.browser_object.set_browser_implicit_wait(300)        
             try:              
                 self.browser_object.wait_until_page_contains_element(self.xpaths["LATimes"]["search_button"])
