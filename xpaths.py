@@ -1,7 +1,7 @@
 CONFIG={
     "LATimes":{
         "search_button":'//button[@data-element="search-button"]',
-        "search_text_field":'//*[@data-element="search-form-input"]',
+        "search_text_field":'/html/body/ps-header/header/div[2]/div[2]/form/label/input',
         "search_submit_button":'//button[@data-element="search-submit-button"]',
         "category_selection":'//select[@class="select-input"]',
         "news_content_count":'//div[@class="promo-content"]',
@@ -14,3 +14,6 @@ CONFIG={
         "news_results_open_status":'//span[@class="search-results-module-count-desktop"]',
     }
 }
+
+
+/html/body/ps-header/header/div[2]/div[2]/form/label/input
