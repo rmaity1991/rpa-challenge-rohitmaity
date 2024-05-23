@@ -14,6 +14,3 @@ CONFIG={
         "news_results_open_status":'//span[@class="search-results-module-count-desktop"]',
     }
 }
-
-
-/html/body/ps-header/header/div[2]/div[2]/form/label/input
