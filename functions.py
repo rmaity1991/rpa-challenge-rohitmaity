@@ -17,7 +17,7 @@ class NewsScrapper:
         # Create the data url and get the current system date
         self.dataUrl=url
         self.current_date=datetime.datetime.fromtimestamp(time.time())
-        self.browser_object=Selenium(auto_close=False,page_load_timeout=120)
+        self.browser_object=Selenium(auto_close=False)
         self.excel_obj=Files()
         self.xpaths=xpaths
         self.screenshotFile=0
